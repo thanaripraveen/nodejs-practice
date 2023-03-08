@@ -1,15 +1,16 @@
 const express = require('express')
+const employee = require('./employee/employeeController.js')
 const app = express();
-const port = 3000
+const bodyParser = require('body-parser')
+const port = 3000;
+const routes = require('./routes.js')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
-app.get('/post', (req, res) => {
-  res.send('this is post request')
-})
+app.use(bodyParser.json({ type: 'application/json' }))
+
+app.use('/api',routes)
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`)
 })
+
