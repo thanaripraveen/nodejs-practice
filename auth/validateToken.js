@@ -7,25 +7,24 @@ const util = require('../utils.js')
 secretKey = "asdfghjklzxcvbnmqwertyuiop1234567890"
 
 // **************  generate Token  ****************
-const generateToken = (request, response) => {
-    const authToken = jwt.sign({ request }, secretKey, { expiresIn: '1h' });
-    response.json(util.responseSuccessJson(200, 'success', authToken))
-
+const generateToken = (email) => {
+    const authToken = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
+    console.log(authToken);
+    return authToken;
 }
 
 // ***************   verify token   ***************
 const verifyToken = (request, response, next) => {
     const token = request.headers['authorization'];
     if (!token) {
-        response.json({ 'status': 403, message: 'A token is required for authentication' })
+        response.json(util.responseErrorJson(403, 'error', 'A token is required for authentication'))
     }
     else {
         try {
-            const decodedToken = jwt.verify(token, secretKey);
-            request.decodedToken = decodedToken
+            jwt.verify(token, secretKey);
         }
         catch {
-            response.json({ status: "error", data: 'something went wrong' })
+            response.json(util.responseErrorJson(401, "error", 'something went wrong'))
         }
     }
     return next();
