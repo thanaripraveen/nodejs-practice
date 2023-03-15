@@ -24,7 +24,7 @@ const userSignIn = (request, response) => {
         bcrypt.compare(request.body.password, result.recordset[0].password, (err, res) => {
             if (!err) {
                 if (res) {
-                    token.generateToken({ email: result.recordset[0].email }, response);
+                    token.generateToken({ email: result.recordset[0].email });
                 }
             }
 
